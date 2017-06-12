@@ -1,0 +1,20 @@
+syntax = "proto3";
+package api;
+
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+message Request {
+    User user = 1 [(validator.field) = {msg_exists : true}];
+}
+
+message User {
+    string id = 1 [(validator.field) = {regex : "^[a-zA-Z0-9]{3,10}$"}];
+    int32 age = 2 [(validator.field) = {int_gt:-1, int_lt: 151}];
+    double height = 3 [(validator.field) = {float_gte: 0, float_lte: 250}];
+}
+
+message Response {}
+
+service UserSerivce {
+    rpc Create(Request) returns (Response);
+}
